@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {render} from 'react-dom';
-import InfectionMap from './src/InfectionMap'
+import InfectionMap from './src/components/Maps/InfectionMap'
 import BublePlot from './src/BublePlot'
 
 import Button from 'react-bootstrap/Button';
@@ -44,11 +44,11 @@ export default class App extends Component {
         }
         else if(this.state.show=="Covid19")
         {
-            return <InfectionMap/>
+            return <BublePlot display={"infectionmap"}/>
         }
         else if(this.state.show=="Covid19Bubles")
         {
-            return <BublePlot/>
+            return <BublePlot  display={"bublesplot"}/>
         }
     } 
     buttonclick = (clicked) =>

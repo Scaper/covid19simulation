@@ -9,6 +9,7 @@ import coronaData from './../data/simulations/CoronaScaper.json';
 
 import CovidPlot from './components/Plot/covidPlot';
 import CovidBublesPlot from './components/Plot/covidBublesPlot';
+import InfectionMap from './components/Maps/InfectionMap';
 
 
 export default class BublePlot extends Component {
@@ -31,7 +32,30 @@ export default class BublePlot extends Component {
       this.setState({time:time})
   }
   render() {
+    let background;
+       
+    if (this.props.display == "bublesplot")
+    {
+      background = <CovidBublesPlot
+      data = {coronaData}
+      time = {this.state.time}
+      ></CovidBublesPlot>
+    }
+    else
+    {
+      console.log("main:")
+      console.log(coronaData)
+      background = <InfectionMap
+            coronaData = {coronaData}
+            time = {this.state.time}
+            ></InfectionMap>
+
+    }
+
     return (
+
+      
+
       <div>
         {
           <TimeBar
@@ -44,14 +68,16 @@ export default class BublePlot extends Component {
           />
 
         }
-        <CovidBublesPlot
-        data = {coronaData}
-        time = {this.state.time}
-        ></CovidBublesPlot>
+        {
+        background       
+        
+        }
+        {
         <CovidPlot
         data = {coronaData}
         time = {this.state.time}
         ></CovidPlot>
+      }
       </div>
     );
   }

@@ -3,17 +3,10 @@ import {render} from 'react-dom';
 import DeckGL from '@deck.gl/react';
 import {GeoJsonLayer,ArcLayer, PolygonLayer} from '@deck.gl/layers';
 import {LightingEffect, AmbientLight, _SunLight as SunLight} from '@deck.gl/core';
-import TimeBar from './components/TimeBar/TimeBar';
-import { INITIAL_VIEW_STATE } from './viewstates';
-
-import './../style.css';
-
-import emmedata from './../data/geojson/emmeNoWaterEPSG4326_simple.json';
-
-import waterdata from './../data/geojson/water.json';
-import coronaData from './../data/simulations/CoronaScaper.json';
-  
-import CovidPlot from './components/Plot/covidPlot';
+import { INITIAL_VIEW_STATE } from './viewstates'
+import '../../../style.css';
+import emmedata from '../../../data/geojson/emmeNoWaterEPSG4326_simple.json';
+import waterdata from '../../../data/geojson/water.json';
 
 
 const ambientLight = new AmbientLight({
@@ -36,7 +29,6 @@ export default class InfectionMap extends Component {
 
     this.state = {
       sidebarOpen : true,
-      time: 0,
       population: false
     };
     const lightingEffect = new LightingEffect({ambientLight, dirLight});
@@ -46,17 +38,18 @@ export default class InfectionMap extends Component {
   
 
   componentWillMount = () =>
-  {
+  {    
     this.SetPopulation()
   }
   getColor = (x,population) =>
   {
+    var coronaData = this.props.coronaData
     var zone = x.properties.ID;
     if(zone > coronaData.NumberOfLocations)
        return -0.01;
     
     var ntime = coronaData.NumberOfDays;
-    var t = Math.round(this.state.time)
+    var t = Math.round(this.props.time)
     var i = t + zone *ntime;
     if(population[zone] < 1)
       return 0.0000001
@@ -68,12 +61,13 @@ export default class InfectionMap extends Component {
   }
   getHeight = (x,population) =>
   {
+    var coronaData = this.props.coronaData
     var zone = x.properties.ID;
     if(zone > coronaData.NumberOfLocations)
        return -0.01;
 
     var ntime = coronaData.NumberOfDays;
-    var t = Math.round(this.state.time)
+    var t = Math.round(this.props.time)
     if(population[zone] < 1)
       return 0.0000001
 
@@ -86,6 +80,8 @@ export default class InfectionMap extends Component {
   }
   SetPopulation = () =>
   {
+    var coronaData = this.props.coronaData
+
     var data = []
     for(var l = 0; l<coronaData.NumberOfLocations; l++)
     {
@@ -99,8 +95,9 @@ export default class InfectionMap extends Component {
   }
   totalHeight = () => 
   {
+    var coronaData = this.props.coronaData
     var ntime = coronaData.NumberOfDays;
-    var t = Math.round(this.state.time)
+    var t = Math.round(this.props.time)
     var val = 0.01
     for(var zone = 0;zone < coronaData.NumberOfLocations; zone++ )
     {
@@ -171,8 +168,8 @@ return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
         pickable: true,
         onHover:this._onHover,
         updateTriggers : {
-          getElevation : Math.round(this.state.time),
-          getFillColor : Math.round(this.state.time),
+          getElevation : Math.round(this.props.time),
+          getFillColor : Math.round(this.props.time),
         }
       }),
       new GeoJsonLayer({
@@ -191,47 +188,21 @@ return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
       }),
     ];
   }
-  setTime = (time) =>
-  {
-      this.setState({time:time})
-  }
+  
   render() {
     const {mapStyle = 'mapbox://styles/mapbox/light-v9'} = this.props;
+    console.log(this.props.coronaData)
 
     return (
       <div>
-        {
-          <TimeBar
-            left={this.state.sidebarOpen ? "calc(170px + 10px)" : "100vw"}
-            time = {this.state.time}
-            min = {0}
-            max = {coronaData.NumberOfDays}
-            setTime={this.setTime}
-            loaded = {true}
-          />
-
-        }
         <DeckGL
           layers={this._renderLayers()}
           effects={this._effects}
           initialViewState={INITIAL_VIEW_STATE}
           controller={true}
-
         >
-          {/* <StaticMap
-          reuseMaps
-          mapStyle={mapStyle}
-          preventStyleDiffing={true}
-          mapboxApiAccessToken={MAPBOX_TOKEN}
-        /> */}
-
           {this._renderTooltip}
         </DeckGL>
-
-        <CovidPlot
-        data = {coronaData}
-        time = {this.state.time}
-        ></CovidPlot>
       </div>
     );
   }

@@ -1,0 +1,62 @@
+.bottom-bar {
+   position: fixed;
+   width: calc(40vw);
+   bottom: 5px;
+   /* height: 110px; */
+   background: rgba(255, 255, 255, 0.7);
+   z-index: 50000;
+   border-radius: 5px;
+   padding:  10px 7px 0 7px;
+   box-sizing: border-box;
+   display: flex;
+   flex-direction: column;
+   transition: .3s all;
+   margin: 10px;
+
+}
+
+rect.bar {
+   fill: #D6D6D6;
+}
+
+.bottom-row{
+   margin-top: 0px;
+   display: flex;
+   justify-content: left;
+   color: #7D7D7D;
+}
+.date-row {
+   margin-top: 0px;
+   display: flex;
+   justify-content: space-between;
+   color: #7D7D7D;
+   font-size: 7px;
+}
+
+.playbutton {
+   height:0.8em;
+   width:0.8em;
+   border: none;
+   background: none;
+   cursor: pointer;
+   padding: 0px;
+   }
+
+
+.column {
+  float: left;
+}
+
+.left {
+  width: 30px;
+}
+
+.right {
+  flex: 90%;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}

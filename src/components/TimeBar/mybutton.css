@@ -1,0 +1,35 @@
+.svgicon {
+    display: inline-flex;
+    align-self: center;
+    position: relative;
+    flex: 100%;
+}
+.svgicon svg, .svgicon img {
+    height: 0.7em;
+    width: 0.7em;
+}
+/*--------------------------------------*/
+/*--------------------------------------*/
+/*--------------------------------------*/
+/*---------Other Button Style Stuff ----*/
+/*--------------------------------------*/
+button .svgicon {
+  font-size: 18px;
+}
+button.btn-highlight, .button.btn-highlight, input[type="submit"].btn-highlight, input[type="reset"].btn-highlight, input[type="button"].btn-highlight {
+    background-color: #1B78B3;
+    color: #fff;
+    border-color: #1B78B3;
+}
+button.btn-icon, .button.btn-icon {
+    padding: 0;
+}
+button.btn-highlight .svgicon, .button.btn-highlight .svgicon, input[type="submit"].btn-highlight .svgicon, input[type="reset"].btn-highlight .svgicon, input[type="button"].btn-highlight .svgicon {
+    fill: #fff;
+}
+button.btn-icon .svgicon, .button.btn-icon .svgicon {
+    margin: 5px;
+}
+input, textarea, keygen, select, button {
+    font-family: "Source Sans Pro", "SourceSansPro", Helvetica, sans-serif;
+}

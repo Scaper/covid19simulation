@@ -7,7 +7,7 @@ import { INITIAL_VIEW_STATE } from './viewstates'
 import '../../../style.css';
 import emmedata from '../../../data/geojson/emmeNoWaterEPSG4326_simple.json';
 import waterdata from '../../../data/geojson/water.json';
-
+import InfoBox from '../InfoBox/InfoBox'
 
 const ambientLight = new AmbientLight({
   color: [255, 255, 255],
@@ -195,6 +195,9 @@ return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 
     return (
       <div>
+
+      <div>
+      
         <DeckGL
           layers={this._renderLayers()}
           effects={this._effects}
@@ -203,6 +206,16 @@ return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
         >
           {this._renderTooltip}
         </DeckGL>
+      </div>
+
+      <div className="map-plot-info">
+      <InfoBox
+       title={"Covid-19 per zone"}
+       text={"The height represent the share of the population that has been infected. \n The color shows the current infection rate in the zone."}
+       />
+       </div>
+
+      
       </div>
     );
   }

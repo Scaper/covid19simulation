@@ -14,7 +14,7 @@ import {XYPlot,
   Hint} from 'react-vis';
 import React from 'react';
 import './covidPlot.css';
-
+import InfoBox from '../Infobox/InfoBox'
 
 const axisStyle = {
   ticks: {
@@ -166,13 +166,20 @@ componentWillReceiveProps(nextProps) {
           };
 
         return (
+          <div>
+          <div className="covidbubles-plot-info">
+          <InfoBox
+          title={"Covid-19 per zone"}
+          text={"Each bubble represent one zone. The size represent the population of the zone. The x-axis shows the percentage of the popoulation in the zone that became infected on the current day, and the y-axis shows the total number of infections in the zone."}
+          />
+          </div>
         <div className="covidbubles-plot">
         <FlexibleXYPlot 
         opacity = {0.4}
         yDomain={[0,3]}
         xDomain={[0,100]}
         >
-        <XAxis style = {axisStyle} title="Cumulated infected (%)"/>
+        <XAxis style = {axisStyle} title="Total infected (%)"/>
           <YAxis style = {axisStyle} title="Infected per day (%)"/>
           {data &&<MarkSeries 
              {...markSeriesProps}
@@ -181,6 +188,8 @@ componentWillReceiveProps(nextProps) {
           <LineSeries data={[{x: 0, y: this.state.meany}, {x: this.state.meanx, y: this.state.meany}, {x: this.state.meanx, y: 0}]} opacity = {0.7} strokeWidth={0.6}/>
           </FlexibleXYPlot>
         </div>
+        </div>
+
         )
     }
 

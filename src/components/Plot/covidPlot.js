@@ -46,6 +46,7 @@ export default class CovidPlot extends React.Component {
        dataAss : [],
        dataImm : [],
        datapop : [],
+       dataNewInf : [],
        popTotal : 0,
 
     }
@@ -65,6 +66,7 @@ componentWillMount = () =>
   var totalp = this.SetPopulation()
   this.setState({dataInfTot: this.GetTotalInfected(dataSuc,dataDead,totalp)})
   this.setState({dataDead : dataDead.filter(d=>d.y>0.5)})
+  this.setState({dataNewInf : this.GetNewInfections(dataSuc)})
 }
 
 SetPopulation = () =>
@@ -105,12 +107,22 @@ GetTotalInfected = (dsuc,dataDead,popTotal) =>
   var data = []
   for(var t = 0; t<this.props.data.NumberOfDays; t++)
   {
-    data[t] = {x:t, y:popTotal-dsuc[t].y-dataDead[t].y}
+    data[t] = {x:t, y:popTotal-dsuc[t].y}
   }
   return data
 }
+GetNewInfections = (dsuc) =>
+{
+  var data = []
+  for(var t = 0; t<this.props.data.NumberOfDays-1; t++)
+  {
+    var dy = (dsuc[t].y-dsuc[t+1].y+0.0000000001)
+    data[t] = {x:t, y:dy}
+  }
+  return data;
+}
     render() {
-      //console.log(this.state.data)
+
 return (
   <div className="grid-container">
     <div className="item1">
@@ -138,7 +150,6 @@ return (
       </div>
       <div className="item2">
         <FlexibleXYPlot  
-        stackBy="y"
         opacity = {1}
         xDomain={[0,this.props.time]}
         yDomain={[1,1000000]}
@@ -148,6 +159,7 @@ return (
             items={[
                 'Dead',
                 'Infected total',
+                'New infections',
             ]}
             orientation="horizontal"
 
@@ -156,6 +168,7 @@ return (
           <YAxis style = {axisStyle} title="Total Number of cases"/>
           <LineSeries  data = {this.state.dataDead}/>
           <LineSeries  data = {this.state.dataInfTot}/>
+          <LineSeries  data = {this.state.dataNewInf}/>
           </FlexibleXYPlot>
       </div>
 </div>
